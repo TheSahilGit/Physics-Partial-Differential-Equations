@@ -11,10 +11,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 nx = 10
-nt = 10000
+nt = 15000
 
 k = 4.
-dx = 0.1
+dx = float(1/nx)
 dt = 0.000001
 a = float(k * dt / (dx * dx))
 
@@ -59,3 +59,4 @@ plt.ylabel("Temperature")
 plt.grid()
 plt.legend()
 plt.show()
+
