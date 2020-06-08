@@ -6,39 +6,35 @@
 ### Sahil Islam ###
 ### 08/06/2020 ###
 
-
 import matplotlib.pyplot as plt
 import numpy as np
 
-nx = 10
-nt = 15000
+kx = 11
+kt = 10 ** 5
+temp = np.zeros((kx, kt))
+time = np.zeros(kt)
+position = np.linspace(0, 1, kx)
 
-k = 4.
-dx = float(1/nx)
-dt = 0.000001
-a = float(k * dt / (dx * dx))
+k = 4.0
+dx = 0.1
+dt = 1. / (10 ** 5)
+c = k * dt / dx ** 2
 
-u = np.zeros((nx + 1, nt + 1))
-xs = []
-ts = []
+ti = np.linspace(0, 50000, kt)
 
-for i in range(nx + 1):
-    x = i * dx
-    u[i, 0] = 100.0 * np.sin(np.pi * x)
-    xs.append(x)
+for t in range(kt - 1):
+    time[t + 1] = time[t] + t * dt
 
-for j in range(nt + 1):
-    t = j * dt
-    u[0, j] = 0
-    u[10, j] = 0
-    ts.append(t)
+for t in range(kt - 1):
+    for x in range(1, kx - 1):
+        temp[x, t] = 100. * np.sin(np.pi * position[x])
 
-for i in range(1, nx):
-    for j in range(nt):
-        u[i, j + 1] = a * u[i - 1, j] + (1 - 2 * a) * u[i, j] + a * u[i + 1, j]
+for t in range(kt - 1):
+    for x in range(1, kx - 1):
+        temp[x, t + 1] = temp[x, t] + c * (temp[x + 1, t] - 2 * temp[x, t] + temp[x - 1, t])
 
-for k in range(0, int(nx / 2) + 1):
-    plt.plot(ts, u[k, :], label='Position=' + str(k))
+for k in range(0, kx - 1):
+    plt.plot(time, temp[k, :], label='Position=' + str(k))
 
 plt.xlabel("Time")
 plt.ylabel("Temperature")
@@ -47,16 +43,15 @@ plt.legend()
 plt.show()
 
 mint = 0
-maxt = int(nt)
+maxt = 10000
 plots = 10
 interval = int((maxt - mint) / plots)
 
 for k in range(mint, maxt, interval):
-    plt.plot(xs, u[:, k], label='Time=' + str(k))
+    plt.plot(position, temp[:, k], label='Time=' + str(k))
 
 plt.xlabel("Position")
 plt.ylabel("Temperature")
 plt.grid()
 plt.legend()
 plt.show()
-
