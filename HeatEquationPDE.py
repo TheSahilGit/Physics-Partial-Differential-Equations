@@ -1,3 +1,12 @@
+"""Problem: To solve 1D heat equation by explicit scheme.
+    Initial conditions are:
+    i. u(x,0)=100*Sin(pi*x)
+    ii. u(0,t)=u(1,t)=0
+    """
+### Sahil Islam ###
+### 08/06/2020 ###
+
+
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -28,16 +37,25 @@ for i in range(1, nx):
     for j in range(nt):
         u[i, j + 1] = a * u[i - 1, j] + (1 - 2 * a) * u[i, j] + a * u[i + 1, j]
 
-for k in range(0, int(nx/2)+1):
-    plt.plot(ts, u[k, :], label='x=' + str(k))
+for k in range(0, int(nx / 2) + 1):
+    plt.plot(ts, u[k, :], label='Position=' + str(k))
 
+plt.xlabel("Time")
+plt.ylabel("Temperature")
 plt.grid()
 plt.legend()
 plt.show()
 
-for k in range(000, int(nt/10), 100):
-    plt.plot(xs, u[:, k], label='t=' + str(k))
+mint = 0
+maxt = int(nt)
+plots = 10
+interval = int((maxt - mint) / plots)
 
+for k in range(mint, maxt, interval):
+    plt.plot(xs, u[:, k], label='Time=' + str(k))
+
+plt.xlabel("Position")
+plt.ylabel("Temperature")
 plt.grid()
 plt.legend()
 plt.show()
